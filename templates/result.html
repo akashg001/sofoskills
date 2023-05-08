@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+            background-image: url('../static/Register.png');
+            height: 100%;
+            width: auto;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .header{
+            display: flex;
+            justify-content: right;
+        }
+        .button-15 {
+    margin: 10px;
+  background-image: linear-gradient(#42A1EC, #0070C9);
+  border: 1px solid #0077CC;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  direction: ltr;
+  display: block;
+  font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  line-height: 1.47059;
+  min-width: 30px;
+  overflow: visible;
+  padding: 4px 15px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button-15:disabled {
+  cursor: default;
+  opacity: .3;
+}
+
+.button-15:hover {
+  background-image: linear-gradient(#51A9EE, #147BCD);
+  border-color: #1482D0;
+  text-decoration: none;
+}
+
+.button-15:active {
+  background-image: linear-gradient(#3D94D9, #0067B9);
+  border-color: #006DBC;
+  outline: none;
+}
+
+.button-15:focus {
+  box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+  outline: none;
+}
+table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    border-collapse: collapse;
+    color: #686461;
+    width: 50%;
+    float: right;
+  }
+  caption {
+    padding: 10px;
+    color: white;
+    background: #8FD4C1;
+    font-size: 18px;
+    text-align: left;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .head {
+    border-bottom: 3px solid #B9B29F;
+    padding: 10px;
+    text-align: center;
+    font-weight: 700;
+  }
+  td {
+    padding: 10px;
+  }
+  tr:nth-child(odd) {
+    background: white;
+  }
+  tr:nth-child(even) {
+    background: #E8E6D1;
+  }
+  .chart{
+    width: 50%;
+    float: left;
+  }
+  
+  .column {
+    float: left;
+    width: 18%;
+    padding: 0 10px;
+  }
+  .row {
+    margin-top: 30%;
+   }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    text-align: center;
+    background-color: #f1f1f1;
+  }
+ 
+</style>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="{{ url_for('logout') }}"><button class="button-15"> {{current_user.email}} </button></a>
+        </div>
+        <div class="graph">
+            <div id="chartContainer" class="chart"></div>
+        <table>
+            <caption>
+              Congratulations you have scored 1st position
+            </caption>
+            <tr>
+              <th class="head">Position</th>
+              <th class="head">User</th>
+              <th class="head" >time taken</th>
+              <th class="head" >attempts taken</th>
+            </tr>
+            {% for result in data['all'] %}
+        <tr>
+          <td>1</td>
+          <td>{{ result.user.email }}</td>
+          <td>{{ result.total }}</td>
+          <td>{{ result.avg }}</td>
+        </tr>
+      {% endfor %}
+          </table>
+        </div>
+        <div class="row">
+            <div class="column">
+              <div class="card">
+                <h3>Question 1</h3>
+                <p>time taken {{ data['my'].q1_time }}</p>
+                <p>attempt taken {{ data['my'].q1_attempts }}</p>
+              </div>
+            </div>
+          
+            <div class="column">
+              <div class="card">
+                <h3>question 2</h3>
+                <p>time taken {{ data['my'].q2_time }}</p>
+                <p>attempt taken {{ data['my'].q2_attempts }}</p>
+              </div>
+            </div>
+            
+            <div class="column">
+              <div class="card">
+                <h3>question 3</h3>
+                <p>time taken {{ data['my'].q3_time }}</p>
+                <p>attempt taken {{ data['my'].q3_attempts }}</p>
+              </div>
+            </div>
+            
+            <div class="column">
+              <div class="card">
+                <h3>question 4</h3>
+                <p>time taken {{ data['my'].q4_time }}</p>
+                <p>attempt taken {{ data['my'].q4_attempts }}</p>
+              </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                  <h3>question 5</h3>
+                  <p>time taken {{ data['my'].q5_time }}</p>
+                  <p>attempt taken {{ data['my'].q5_attempts }}</p>
+                </div>
+              </div>
+        </div>
+          
+        
+    </div>
+    </div>
+    <script>
+        window.onload = function () {
+        
+        var totalVisitors = {{data['total']}}+{{data['max']}}+{{data['min']}}+{{ data['my'].total }};
+        var visitorsData = {
+          "compare result": [{
+            cursor: "pointer",
+            explodeOnClick: false,
+            innerRadius: "75%",
+            legendMarkerType: "square",
+            name: "Performance Comparison",
+            radius: "100%",
+            showInLegend: true,
+            startAngle: 90,
+            type: "doughnut",
+            dataPoints: [
+              { y: {{data['total']}}, name: "Average time", color: "#E7823A" },
+              { y: {{data['max']}}, name: "total max time", color: "#546BC1" },
+              { y: {{data['min']}}, name: "total min time", color: "red" },
+              { y: {{ data['my'].total }}, name: "total my time", color: "green" }
+            ]
+          }]
+        };
+        
+        var newVSReturningVisitorsOptions = {
+          animationEnabled: true,
+          theme: "light1",
+          title: {
+            text: "Compare result"
+          },
+          legend: {
+            fontFamily: "calibri",
+            fontSize: 14,
+            itemTextFormatter: function (e) {
+              return e.dataPoint.name + ": " + Math.round(e.dataPoint.y / totalVisitors * 100) + "%";  
+            }
+          },
+          data: []
+        };
+        var chart = new CanvasJS.Chart("chartContainer", newVSReturningVisitorsOptions);
+        chart.options.data = visitorsData["compare result"];
+        chart.render();
+        
+        function visitorsChartDrilldownHandler(e) {
+          chart = new CanvasJS.Chart("chartContainer", visitorsDrilldownedChartOptions);
+          chart.options.data = visitorsData[e.dataPoint.name];
+          chart.options.title = { text: e.dataPoint.name }
+          chart.render();
+          }
+        
+        }
+        </script>
+        <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>    
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    .timer {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    body{
+            background-image: url('../static/Register.png');
+            height: 100%;
+            width: auto;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .header{
+            display: flex;
+            justify-content: right;
+        }
+        .main{
+            margin-top: 10vh;
+            background-color: aliceblue;
+            height: 60vh;
+            width: 60vw;
+            margin-left: auto;
+            margin-right: auto; 
+        }
+        .first{
+            height: 20px;
+            width: 100%;
+            padding: 10px;
+            font-size: larger;
+        }
+        .second{
+            margin: 5px;
+            height: 45vh;
+            width: auto;
+            border: 2px solid red;
+            background-color: black;
+        }
+        .third{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .input input{
+            width: 48vw;
+            height: 25px;
+            margin-right: 10px;
+        }
+        .button-15 {
+    margin: 10px;
+  background-image: linear-gradient(#42A1EC, #0070C9);
+  border: 1px solid #0077CC;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  direction: ltr;
+  display: block;
+  font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  line-height: 1.47059;
+  min-width: 30px;
+  overflow: visible;
+  padding: 4px 15px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button-15:disabled {
+  cursor: default;
+  opacity: .3;
+}
+
+.button-15:hover {
+  background-image: linear-gradient(#51A9EE, #147BCD);
+  border-color: #1482D0;
+  text-decoration: none;
+}
+
+.button-15:active {
+  background-image: linear-gradient(#3D94D9, #0067B9);
+  border-color: #006DBC;
+  outline: none;
+}
+
+.button-15:focus {
+  box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+  outline: none;
+}
+textarea[readonly] {
+    display: inline-block;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    border-radius: 4px;
+  }
+  
+  textarea:hover,
+  textarea:focus {
+    background-color: #0069d9;
+  }
+ 
+</style>
+<body>
+    <div class="container">
+        <div class="header">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}"><button class="button-15"> {{current_user.email}} </button></a>
+            {% else %}
+                <a href="{{ url_for('login') }}"><button class="button-15" role="button" >login</button></a>
+                  <a href="{{ url_for('register') }}"><button class="button-15" >Register</a></button></a>
+            {% endif %}
+            
+        </div>
+        {% for message in get_flashed_messages() %}
+        <div class="container-fluid fixed-top">
+            <div class="alert alert-warning">{{ message }}</div>
+        </div>
+        {% endfor %}
+       <div class="main">
+        <div class="first"> {{ qstns.qstn }}</div>
+            {% if images %}
+            <div class="second">
+				<img src="{{ images }}" alt="example image" style="max-width: 100%;">
+            </div>
+            {% endif %}
+        </div>
+        <form method="POST" action="{{ url_for('question') }}">
+        <div class="third">
+            <div class="timer">Timer: <textarea rows="1"  oninput="autoResize()" id="timer" name="time" type="button"></textarea></div>
+            <div class="input"> <input type="text" name='answer'></div>
+            <div class="button-15">Submit</div>
+        </div>
+    </form>
+    </div>
+    <script>
+        setTimeout(function() {
+            document.querySelectorAll('.alert').forEach(function(alert) {
+                alert.style.display = 'none';
+            });
+        }, 1000);
+    </script>
+    <script>
+        var timeLimit = 0;
+      
+        // Get the timer element
+        var timerElement = document.getElementById("timer");
+      
+        // Update the timer every second
+        var timer = setInterval(function() {
+          timeLimit++;
+          var minutes = Math.floor(timeLimit / 60);
+          var seconds = timeLimit % 60;
+          if (seconds < 10) {
+            seconds = "0" + seconds;
+          }
+          timerElement.innerHTML = minutes + ":" + seconds;
+          timerElement.value = minutes*60+seconds;
+        }, 1000);
+      </script>
+</body>
+</html>

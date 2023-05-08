@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Register</h2>
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">{{ message }}</div>
+  {% endfor %}
+  <form method="post" style="color: white;">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+      {{ form.name.label }}
+      {{ form.name(size=20, class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.email.label }}
+      {{ form.email(size=20, class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.password.label }}
+      {{ form.password(size=20, class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.confirm_password.label }}
+      {{ form.confirm_password(size=20, class="form-control") }}
+    </div>
+    <div class="d-grid gap-2">
+      {{ form.submit(class="btn btn-primary") }}
+    </div>
+  </form>
+  
+{% endblock %}

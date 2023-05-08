@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Set Questions</h2>
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">{{ message }}</div>
+  {% endfor %}
+  <form method="post" style="color:white;">
+    <div class="form-group">
+        <select name="id">
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+            <option value=5>5</option>
+        </select>
+    </div>
+    <div class="form-group">
+      <input name="qstn">Enter Question</input>
+    </div>
+    <div class="form-group">
+      <input name="answer">Enter answer</input>
+    </div>
+    <div class="form-group">
+      <input name="hint">Enter hint</input>
+    </div>
+    
+    <div class="form-group">
+        <input name="attach" accept="image/*">any image url to attach</input>
+      </div>
+      <button type='Submit'>submit</button>
+  </form>
+{% endblock %}
