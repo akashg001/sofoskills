@@ -25,6 +25,7 @@
  * Admin login
  
  ####  Admin can add the questions
+ #### timer to keep track of the time taken by the user to answer the question
  
  ## Screen shots
   ### 1st Question&nbsp;
