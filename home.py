@@ -82,7 +82,7 @@ def dash():
 @app.route('/result')
 def result():
     res = results.objects(user=current_user).first()
-    all = results.objects.all()
+    all = results.objects.sort("total",-1)
     # total_sum = db.session.query(db.func.sum(results.total)).scalar()
     all_mean = results.objects.aggregate([{"$group": {"_id": None, "total_sum": {"$avg": "$total"}}}])
     all_mean = next(all_mean, {'total_sum': 0})['total_sum']
