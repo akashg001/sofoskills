@@ -28,6 +28,9 @@
  #### timer to keep track of the time taken by the user to answer the question
  
  ## Screen shots
+ ### Dashboard
+ ![Screenshot 2023-05-09 205932](https://github.com/akashg001/sofoskills/assets/99973013/d24be429-9e47-4f33-9a3d-e6601709bb05)
+
   ### 1st Question&nbsp;
   ![Screenshot 2023-05-09 071938](https://user-images.githubusercontent.com/99973013/236978273-0fb17212-40f7-4efa-ac95-47bb4929e244.png)&nbsp;
 
