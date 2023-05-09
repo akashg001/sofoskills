@@ -82,15 +82,20 @@ def dash():
 @app.route('/result')
 def result():
     res = results.objects(user=current_user).first()
-    all = results.objects.sort("total",-1)
-    # total_sum = db.session.query(db.func.sum(results.total)).scalar()
+    all = results.objects.all().order_by('-total')
+    for i, obj in enumerate(all):
+        if obj.user.id == current_user.id:
+            rank = i
+            break
+    all = [(i+1, obj) for i, obj in enumerate(all)]
+    print(rank,"RRRRRRRRRRRRRRRR")
     all_mean = results.objects.aggregate([{"$group": {"_id": None, "total_sum": {"$avg": "$total"}}}])
     all_mean = next(all_mean, {'total_sum': 0})['total_sum']
     min_time = results.objects.aggregate([{"$group": {"_id": None, "total_sum": {"$min": "$total"}}}])
     min_time = next(min_time, {'total_sum': 0})['total_sum']
     max_time = results.objects.aggregate([{"$group": {"_id": None, "total_sum": {"$max": "$total"}}}])
     max_time = next(max_time, {'total_sum': 0})['total_sum']
-    data = {'my':res,'all':all,'total':all_mean,'max':max_time,'min':min_time}
+    data = {'my':res,'all':all,'total':all_mean,'max':max_time,'min':min_time,"rank":rank+1}
     return render_template('result.html',data=data)
 
 @app.route('/question',methods=['GET', 'POST'])

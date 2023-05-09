@@ -132,7 +132,7 @@ table {
             <div id="chartContainer" class="chart"></div>
         <table>
             <caption>
-              Congratulations you have scored 1st position
+              Congratulations you have scored {{data['rank']}} position
             </caption>
             <tr>
               <th class="head">Position</th>
@@ -140,9 +140,9 @@ table {
               <th class="head" >time taken</th>
               <th class="head" >attempts taken</th>
             </tr>
-            {% for result in data['all'] %}
+            {% for i,result in data['all'] %}
         <tr>
-          <td>1</td>
+          <td>{{i}}</td>
           <td>{{ result.user.email }}</td>
           <td>{{ result.total }}</td>
           <td>{{ result.avg }}</td>
