@@ -8,7 +8,7 @@
 * 3D perspective view
 * concentration
 * logic building
-* 3D movemnt ability
+* 3D movement ability
 
 #### 7 soft skills assessed
 * Critical Thinking
