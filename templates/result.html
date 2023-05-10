@@ -138,12 +138,12 @@ table {
               <th class="head">Position</th>
               <th class="head">User</th>
               <th class="head" >time taken</th>
-              <th class="head" >attempts taken</th>
+              <th class="head" >average time</th>
             </tr>
             {% for i,result in data['all'] %}
         <tr>
           <td>{{i}}</td>
-          <td>{{ result.user.email }}</td>
+          <td>{{ result.user.name }}</td>
           <td>{{ result.total }}</td>
           <td>{{ result.avg }}</td>
         </tr>

@@ -3,12 +3,15 @@ from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo,InputRequired
 from flask_login import login_required
 import urllib.request
 import base64
 import os
 from dotenv import load_dotenv
+from flask_admin import Admin, AdminIndexView
+from flask_admin.contrib.mongoengine import *
+
 
 load_dotenv()
 global max_time
@@ -61,6 +64,35 @@ class questions(db.Document):
     qstn_answer = db.StringField()
     hints = db.StringField()
 
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        # check if the user is authenticated
+        return session.get('admin_email') == 'admin@gmail.com'
+
+    def inaccessible_callback(self, name, **kwargs):
+        # redirect to the login page if the user is not authenticated
+        return redirect(url_for('admin_login'))
+    
+admin = Admin(
+    app,
+    name='Admin  Dashboard',
+    index_view=MyAdminIndexView(url='/admin'),
+    url='/admin',
+    template_mode='bootstrap3'
+)
+
+class UserView(ModelView):
+    column_list = ('name', 'email')
+
+class ResultsView(ModelView):
+    column_list = '__all__'
+
+class QuestionsView(ModelView):
+    column_list = '__all__'
+
+admin.add_view(UserView(User))
+admin.add_view(ResultsView(results))
+admin.add_view(QuestionsView(questions))
 
 class RegistrationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -74,6 +106,18 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    form = LoginForm()
+    print(form.email.data,form.password.data)
+    session['admin_email'] = form.email.data
+    if form.email.data == 'admin@gmail.com' and form.password.data == 'admin':
+        return redirect(url_for('admin.index'))
+    else:
+        flash('Invalid email or password.')
+    return render_template('login.html', form=form)
+
 @app.route('/')
 def dash():
     session['q1count'] = 0
@@ -82,7 +126,7 @@ def dash():
 @app.route('/result')
 def result():
     res = results.objects(user=current_user).first()
-    all = results.objects.all().order_by('-total')
+    all = results.objects.all().order_by('total')
     for i, obj in enumerate(all):
         if obj.user.id == current_user.id:
             rank = i
@@ -100,6 +144,7 @@ def result():
 
 @app.route('/question',methods=['GET', 'POST'])
 def question():
+    image_url=""
     if request.method == "POST":
         if User.last_attempt == 6:
             return redirect(url_for('result'))
@@ -163,15 +208,20 @@ def question():
             user = User.objects.get(id=current_user.id)
             qstn = questions.objects(qstn_id=user.last_attempt).first()
             image = qstn.qstn_attach.read()
-            base64_data = base64.b64encode(image).decode('utf-8')
-            image_url = f"data:image/png;base64,{base64_data}"
+            if image:
+                base64_data = base64.b64encode(image).decode('utf-8')
+                image_url = f"data:image/png;base64,{base64_data}"
         else:
             qstn = questions.objects(qstn_id=1).first()
             image = qstn.qstn_attach.read()
-            base64_data = base64.b64encode(image).decode('utf-8')
-            image_url = f"data:image/png;base64,{base64_data}"
+            if image:
+                base64_data = base64.b64encode(image).decode('utf-8')
+                image_url = f"data:image/png;base64,{base64_data}"
             print("Gupta")
-        return render_template('question.html',qstns=qstn,images=image_url)
+        if image_url:
+            return render_template('question.html',qstns=qstn,images=image_url)
+        else:
+            return render_template('question.html',qstns=qstn)
     
 @login_required
 @app.route('/set',methods=['POST','GET'])
@@ -179,14 +229,15 @@ def set():
     if current_user.email=="admin@gmail.com":
         if request.method=="POST":
             id = request.form.get('id')
-            qstn = request.form.get('qsth')
-            answer = request.form.get('ans')
+            qstn = request.form.get('qstn')
+            answer = request.form.get('answer')
             hint = request.form.get('hint')
             attach = request.form.get('attach')
-            image_data = urllib.request.urlopen(attach).read()
             question = questions(qstn_id=id,qstn=qstn,qstn_answer=answer,hints=hint)
-            question.qstn_attach.put(image_data, content_type='image/png')
-                # question.qstn_attach.put)
+            if attach:
+                image_data = urllib.request.urlopen(attach).read()
+                question.qstn_attach.put(image_data, content_type='image/png')
+                    # question.qstn_attach.put)
             question.save()
             return redirect(url_for('set'))
     return render_template('set.html')
