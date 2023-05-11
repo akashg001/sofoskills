@@ -4,12 +4,10 @@ from flask_login import LoginManager, login_user, logout_user, current_user
 from flask_login import login_required
 import urllib.request
 import base64
-import os
-from dotenv import load_dotenv
 from flask_admin.contrib.mongoengine import *
 from models import *
 from form import *
-load_dotenv()
+
 global max_time
 global min_time
 admin.add_view(UserView(User))

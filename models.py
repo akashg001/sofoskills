@@ -3,7 +3,9 @@ from flask_login import LoginManager,UserMixin
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.mongoengine import *
 from flask_mongoengine import MongoEngine
+from dotenv import load_dotenv
 import os
+load_dotenv()
 app = Flask(__name__)
 mongo = os.getenv('mongo')
 app.config['SECRET_KEY'] = os.getenv('secure_key')
