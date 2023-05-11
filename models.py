@@ -76,7 +76,7 @@ class UserView(ModelView):
     column_list = ('name', 'email')
 
 class ResultsView(ModelView):
-    column_list = '__all__'
+    column_list = ('user','total','avg')
 
 class QuestionsView(ModelView):
-    column_list = '__all__'
+    column_list = ('qstn_id','qstn','qstn_answer','hint')
