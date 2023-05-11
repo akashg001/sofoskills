@@ -1,0 +1,110 @@
+.timer {
+font-size: 18px;
+margin-bottom: 10px;
+}
+body{
+    background-image: url('../Register.png');
+    height: 100%;
+    width: auto;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.header{
+    display: flex;
+    justify-content: right;
+}
+.main{
+    margin-top: 10vh;
+    background-color: aliceblue;
+    height: 60vh;
+    width: 60vw;
+    margin-left: auto;
+    margin-right: auto; 
+}
+.first{
+    height: 20px;
+    width: 100%;
+    padding: 10px;
+    font-size: larger;
+}
+.second{
+    margin: 5px;
+    height: 45vh;
+    width: auto;
+    border: 2px solid red;
+    background-color: black;
+}
+.third{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.input input{
+    width: 48vw;
+    height: 25px;
+    margin-right: 10px;
+}
+.button-15 {
+margin: 10px;
+background-image: linear-gradient(#42A1EC, #0070C9);
+border: 1px solid #0077CC;
+border-radius: 4px;
+box-sizing: border-box;
+color: #FFFFFF;
+cursor: pointer;
+direction: ltr;
+display: block;
+font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+font-size: 17px;
+font-weight: 400;
+letter-spacing: -.022em;
+line-height: 1.47059;
+min-width: 30px;
+overflow: visible;
+padding: 4px 15px;
+text-align: center;
+user-select: none;
+-webkit-user-select: none;
+touch-action: manipulation;
+white-space: nowrap;
+}
+
+.button-15:disabled {
+cursor: default;
+opacity: .3;
+}
+
+.button-15:hover {
+background-image: linear-gradient(#51A9EE, #147BCD);
+border-color: #1482D0;
+text-decoration: none;
+}
+
+.button-15:active {
+background-image: linear-gradient(#3D94D9, #0067B9);
+border-color: #006DBC;
+outline: none;
+}
+
+.button-15:focus {
+box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+outline: none;
+}
+textarea[readonly] {
+display: inline-block;
+border: none;
+padding: 8px 16px;
+font-size: 16px;
+font-weight: bold;
+text-align: center;
+text-decoration: none;
+background-color: #007bff;
+color: #fff;
+cursor: pointer;
+outline: none;
+border-radius: 4px;
+}
+
+textarea:hover,
+textarea:focus {
+background-color: #0069d9;
+}

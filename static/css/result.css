@@ -1,0 +1,114 @@
+body{
+    background-image: url('../Register.png');
+    height: 100%;
+    width: auto;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.header{
+    display: flex;
+    justify-content: right;
+}
+.button-15 {
+margin: 10px;
+background-image: linear-gradient(#42A1EC, #0070C9);
+border: 1px solid #0077CC;
+border-radius: 4px;
+box-sizing: border-box;
+color: #FFFFFF;
+cursor: pointer;
+direction: ltr;
+display: block;
+font-family: "SF Pro Text","SF Pro Icons","AOS Icons","Helvetica Neue",Helvetica,Arial,sans-serif;
+font-size: 17px;
+font-weight: 400;
+letter-spacing: -.022em;
+line-height: 1.47059;
+min-width: 30px;
+overflow: visible;
+padding: 4px 15px;
+text-align: center;
+user-select: none;
+-webkit-user-select: none;
+touch-action: manipulation;
+white-space: nowrap;
+}
+
+.button-15:disabled {
+cursor: default;
+opacity: .3;
+}
+
+.button-15:hover {
+background-image: linear-gradient(#51A9EE, #147BCD);
+border-color: #1482D0;
+text-decoration: none;
+}
+
+.button-15:active {
+background-image: linear-gradient(#3D94D9, #0067B9);
+border-color: #006DBC;
+outline: none;
+}
+
+.button-15:focus {
+box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+outline: none;
+}
+table {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+border-collapse: collapse;
+color: #686461;
+width: 50%;
+float: right;
+}
+caption {
+padding: 10px;
+color: white;
+background: #8FD4C1;
+font-size: 18px;
+text-align: left;
+font-weight: bold;
+text-align: center;
+}
+
+.head {
+border-bottom: 3px solid #B9B29F;
+padding: 10px;
+text-align: center;
+font-weight: 700;
+}
+td {
+padding: 10px;
+}
+tr:nth-child(odd) {
+background: white;
+}
+tr:nth-child(even) {
+background: #E8E6D1;
+}
+.chart{
+width: 50%;
+float: left;
+}
+
+.column {
+float: left;
+width: 18%;
+padding: 0 10px;
+}
+.row {
+margin-top: 30%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+content: "";
+display: table;
+clear: both;
+}
+.card {
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+padding: 10px;
+text-align: center;
+background-color: #f1f1f1;
+}

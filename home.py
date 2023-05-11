@@ -1,111 +1,20 @@
 from flask import Flask, render_template, redirect, url_for, flash,request,session
 from flask_mongoengine import MongoEngine
-from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo,InputRequired
+from flask_login import LoginManager, login_user, logout_user, current_user
 from flask_login import login_required
 import urllib.request
 import base64
 import os
 from dotenv import load_dotenv
-from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.mongoengine import *
-
-
+from models import *
+from form import *
 load_dotenv()
 global max_time
 global min_time
-app = Flask(__name__)
-mongo = os.getenv('mongo')
-app.config['SECRET_KEY'] = os.getenv('secure_key')
-app.config['MONGODB_SETTINGS'] = {
-    'db': os.getenv('db'),
-    'host': mongo,
-    'port': 5000
-}
-app.config['UPLOAD_FOLDER'] = '/path/to/uploads'
-app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB
-
-db = MongoEngine(app)
-login_manager = LoginManager(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.objects(id=user_id).first()
-
-class User(UserMixin, db.Document):
-    name = db.StringField()
-    email = db.EmailField(unique=True)
-    password = db.StringField()
-    last_attempt = db.IntField()
-
-
-class results(db.Document):
-    user = db.ReferenceField(User)
-    q1_time = db.IntField()
-    q1_attempts = db.IntField(default=0)
-    q2_time = db.IntField()
-    q2_attempts = db.IntField(default=0)
-    q3_time = db.IntField()
-    q3_attempts = db.IntField(default=0)
-    q4_time = db.IntField()
-    q4_attempts = db.IntField(default=0)
-    q5_time = db.IntField()
-    q5_attempts = db.IntField(default=0)
-    total = db.IntField(default=0)
-    avg = db.IntField(default=0)
-    
-class questions(db.Document):
-    qstn_id = db.IntField()
-    qstn = db.StringField()
-    qstn_attach = db.FileField()
-    qstn_answer = db.StringField()
-    hints = db.StringField()
-
-class MyAdminIndexView(AdminIndexView):
-    def is_accessible(self):
-        # check if the user is authenticated
-        return session.get('admin_email') == 'admin@gmail.com'
-
-    def inaccessible_callback(self, name, **kwargs):
-        # redirect to the login page if the user is not authenticated
-        return redirect(url_for('admin_login'))
-    
-admin = Admin(
-    app,
-    name='Admin  Dashboard',
-    index_view=MyAdminIndexView(url='/admin'),
-    url='/admin',
-    template_mode='bootstrap3'
-)
-
-class UserView(ModelView):
-    column_list = ('name', 'email')
-
-class ResultsView(ModelView):
-    column_list = '__all__'
-
-class QuestionsView(ModelView):
-    column_list = '__all__'
-
 admin.add_view(UserView(User))
 admin.add_view(ResultsView(results))
 admin.add_view(QuestionsView(questions))
-
-class RegistrationForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
-
-class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Log In')
-
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -132,7 +41,6 @@ def result():
             rank = i
             break
     all = [(i+1, obj) for i, obj in enumerate(all)]
-    print(rank,"RRRRRRRRRRRRRRRR")
     all_mean = results.objects.aggregate([{"$group": {"_id": None, "total_sum": {"$avg": "$total"}}}])
     all_mean = next(all_mean, {'total_sum': 0})['total_sum']
     min_time = results.objects.aggregate([{"$group": {"_id": None, "total_sum": {"$min": "$total"}}}])
@@ -237,7 +145,6 @@ def set():
             if attach:
                 image_data = urllib.request.urlopen(attach).read()
                 question.qstn_attach.put(image_data, content_type='image/png')
-                    # question.qstn_attach.put)
             question.save()
             return redirect(url_for('set'))
     return render_template('set.html')
