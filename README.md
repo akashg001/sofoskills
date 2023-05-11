@@ -57,8 +57,9 @@
   
   ### Report analysis and Leaderboard page
   ![Screenshot 2023-05-09 073441](https://user-images.githubusercontent.com/99973013/236978462-2eb00f9a-f4f6-4889-a331-6add847d063f.png)
+### Admin Dashboard
+  ![Screenshot 2023-05-11 125851](https://github.com/akashg001/sofoskills/assets/99973013/49d49958-a3b1-4bea-adaa-92975032432c)
 
-  
   ## TechStack Used &nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/css3/css3-plain-wordmark.svg"  title="CSS3" alt="CSS" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
