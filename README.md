@@ -18,7 +18,7 @@
 * logic building
 * 3D movement ability
 
-#### 7 soft skills assessed
+#### soft skills assessed
 * Critical Thinking
 * Memory
 * Patience
