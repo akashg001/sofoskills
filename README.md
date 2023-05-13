@@ -9,7 +9,6 @@
         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original-wordmark.svg" width="40" height="40"/>&nbsp;
         
 # Features
-## Listed below are all the feature included in the project
 
 ###  Game Feature
 #### 5 stages of game
